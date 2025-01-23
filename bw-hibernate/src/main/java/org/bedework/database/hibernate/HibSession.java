@@ -98,11 +98,6 @@ public interface HibSession extends Serializable {
    */
   void createQuery(String s);
 
-  /** Mark the query as cacheable
-   *
-   */
-  void cacheableQuery();
-
   /** Set the named parameter with the given value
    *
    * @param parName     String parameter name

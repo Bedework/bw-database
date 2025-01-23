@@ -139,8 +139,8 @@ public class DbSessionImpl implements Logged, DbSession {
 //      if (tx != null &&
 //          !tx.wasCommitted() &&
 //          !tx.wasRolledBack()) {
-        //if (getLogger().isDebugEnabled()) {
-        //  getLogger().debug("About to comnmit");
+        //if (debug()) {
+        //  debug("About to comnmit");
         //}
       if ((tx != null) &&
               !rolledBack &&
@@ -179,14 +179,14 @@ public class DbSessionImpl implements Logged, DbSession {
       throw  new BedeworkDatabaseException(exc);
     }
 */
-    if (getLogger().isDebugEnabled()) {
-      getLogger().debug("Enter rollback");
+    if (debug()) {
+      debug("Enter rollback");
     }
     try {
       if ((tx != null) &&
           !rolledBack) {
-        if (getLogger().isDebugEnabled()) {
-          getLogger().debug("About to rollback");
+        if (debug()) {
+          debug("About to rollback");
         }
         tx.rollback();
         tx = null;
@@ -247,20 +247,6 @@ public class DbSessionImpl implements Logged, DbSession {
 
     try {
       q = sess.createQuery(s);
-    } catch (final Throwable t) {
-      handleException(t);
-    }
-  }
-
-  @Override
-  public void cacheableQuery() {
-    if (exc != null) {
-      // Didn't hear me last time?
-      throw exc;
-    }
-
-    try {
-      q.setCacheable(true);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -550,8 +536,8 @@ public class DbSessionImpl implements Logged, DbSession {
       throw exc;
     }
 
-    if (getLogger().isDebugEnabled()) {
-      getLogger().debug("About to flush");
+    if (debug()) {
+      debug("About to flush");
     }
     try {
       sess.flush();
@@ -567,8 +553,8 @@ public class DbSessionImpl implements Logged, DbSession {
       throw exc;
     }
 
-    if (getLogger().isDebugEnabled()) {
-      getLogger().debug("About to flush");
+    if (debug()) {
+      debug("About to flush");
     }
     try {
       sess.clear();

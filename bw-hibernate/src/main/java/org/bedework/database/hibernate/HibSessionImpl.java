@@ -138,8 +138,8 @@ public class HibSessionImpl implements Logged, HibSession {
 //      if (tx != null &&
 //          !tx.wasCommitted() &&
 //          !tx.wasRolledBack()) {
-        //if (getLogger().isDebugEnabled()) {
-        //  getLogger().debug("About to comnmit");
+        //if (debug()) {
+        //  debug("About to comnmit");
         //}
       if ((tx != null) &&
               !rolledBack &&
@@ -176,14 +176,14 @@ public class HibSessionImpl implements Logged, HibSession {
       throw  new BedeworkDatabaseException(exc);
     }
 */
-    if (getLogger().isDebugEnabled()) {
-      getLogger().debug("Enter rollback");
+    if (debug()) {
+      debug("Enter rollback");
     }
     try {
       if ((tx != null) &&
           !rolledBack) {
-        if (getLogger().isDebugEnabled()) {
-          getLogger().debug("About to rollback");
+        if (debug()) {
+          debug("About to rollback");
         }
         tx.rollback();
         tx = null;
@@ -244,20 +244,6 @@ public class HibSessionImpl implements Logged, HibSession {
 
     try {
       q = sess.createQuery(s);
-    } catch (final Throwable t) {
-      handleException(t);
-    }
-  }
-
-  @Override
-  public void cacheableQuery() {
-    if (exc != null) {
-      // Didn't hear me last time?
-      throw  new BedeworkDatabaseException(exc);
-    }
-
-    try {
-      q.setCacheable(true);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -560,8 +546,8 @@ public class HibSessionImpl implements Logged, HibSession {
       throw  new BedeworkDatabaseException(exc);
     }
 
-    if (getLogger().isDebugEnabled()) {
-      getLogger().debug("About to flush");
+    if (debug()) {
+      debug("About to flush");
     }
     try {
       sess.flush();
@@ -577,8 +563,8 @@ public class HibSessionImpl implements Logged, HibSession {
       throw  new BedeworkDatabaseException(exc);
     }
 
-    if (getLogger().isDebugEnabled()) {
-      getLogger().debug("About to flush");
+    if (debug()) {
+      debug("About to flush");
     }
     try {
       sess.clear();
@@ -681,11 +667,9 @@ public class HibSessionImpl implements Logged, HibSession {
   }
 
   private void beforeDelete(final Object o) {
-    if (!(o instanceof VersionedDbEntity)) {
+    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
       return;
     }
-
-    final var ent = (VersionedDbEntity<?, ?>)o;
 
     ent.beforeDeletion();
   }
@@ -715,9 +699,9 @@ public class HibSessionImpl implements Logged, HibSession {
     error(t);
   }
 
-  /* ====================================================================
+  /* ==============================================================
    *                   Logged methods
-   * ==================================================================== */
+   * ============================================================== */
 
   private final BwLogger logger = new BwLogger();
 
