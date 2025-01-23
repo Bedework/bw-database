@@ -16,38 +16,27 @@
     specific language governing permissions and limitations
     under the License.
 */
-package org.bedework.database.hibernate;
+package org.bedework.database.db;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** This is used to annotate a method for which we should generate dump output.
+/** This is used to annotate a method which we should not dump.
  *
  * @author Mike Douglass
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface Dump {
-  /** Name of element to use in xml dump
+public @interface NoDump {
+  /** This is valid only for a class. If specified without any values means
+   * do not dump the class. If specified with a list means skip those methods.
+   *
+   * <p>Allows skipping of inherited methods.
+   *
+   * @return String names of methods to skip
    */
-  String elementName() default "";
-
-  /** For a collection, if this is not defaulted, each element of the
-   * collection will be wrapped in this extra tag
-   */
-  String collectionElementName() default "";
-
-  /** If true this element is treated as a compound type - we don't give it an
-   * outer element and we dump all the values
-   */
-  boolean compound() default false;
-
-  /** If being dumped as a reference these are the fields to dump */
-  String[] keyFields() default {};
-
-  /** If non empty these are the first fields to dump */
-  String[] firstFields() default {};
+  String[] value() default {};
 }

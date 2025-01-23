@@ -16,7 +16,7 @@
     specific language governing permissions and limitations
     under the License.
 */
-package org.bedework.database.hibernate;
+package org.bedework.database.db;
 
 import java.util.Collection;
 

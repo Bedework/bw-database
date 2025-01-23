@@ -22,12 +22,12 @@ import org.bedework.base.exc.BedeworkException;
 import org.bedework.base.exc.persist.BedeworkConstraintViolationException;
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
 import org.bedework.base.exc.persist.BedeworkStaleStateException;
+import org.bedework.database.db.VersionedDbEntity;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
 
 import org.hibernate.Query;
-import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StaleStateException;
@@ -520,20 +520,6 @@ public class HibSessionImpl implements Logged, HibSession {
       evict(obj);
       sess.delete(sess.merge(obj));
       deleteSubs(obj);
-    } catch (final Throwable t) {
-      handleException(t);
-    }
-  }
-
-  @Override
-  public void restore(final Object obj) {
-    if (exc != null) {
-      // Didn't hear me last time?
-      throw  new BedeworkDatabaseException(exc);
-    }
-
-    try {
-      sess.replicate(obj, ReplicationMode.IGNORE);
     } catch (final Throwable t) {
       handleException(t);
     }

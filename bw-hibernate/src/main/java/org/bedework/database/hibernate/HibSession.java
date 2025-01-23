@@ -173,15 +173,15 @@ public interface HibSession extends Serializable {
   /** Update an object which may have been loaded in a previous hibernate
    * session
    *
-   * @param obj
+   * @param obj to update
    */
   void update(Object obj);
 
   /** Merge and update an object which may have been loaded in a previous hibernate
    * session
    *
-   * @param obj
-   * @return Object   the persiatent object
+   * @param obj to merge
+   * @return Object   the persistent object
    */
   Object merge(Object obj);
 
@@ -214,22 +214,15 @@ public interface HibSession extends Serializable {
 
   /** Save a new object.
    *
-   * @param obj
+   * @param obj to save
    */
   void save(Object obj);
 
   /** Delete an object
    *
-   * @param obj
+   * @param obj to delete
    */
   void delete(Object obj);
-
-  /** Save a new object with the given id. This should only be used for
-   * restoring the db from a save.
-   *
-   * @param obj
-   */
-  void restore(Object obj);
 
   /**
    */

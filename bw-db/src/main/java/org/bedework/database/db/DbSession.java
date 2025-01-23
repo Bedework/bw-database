@@ -163,7 +163,7 @@ public interface DbSession extends Serializable {
    *
    * @return List          list from query
    */
-  List<?> getList();
+  List getList();
 
   /**
    * @return int number updated
@@ -173,15 +173,15 @@ public interface DbSession extends Serializable {
   /** Update an object which may have been loaded in a previous hibernate
    * session
    *
-   * @param obj
+   * @param obj to update
    */
   void update(Object obj);
 
   /** Merge and update an object which may have been loaded in a previous hibernate
    * session
    *
-   * @param obj
-   * @return Object   the persiatent object
+   * @param obj to merge
+   * @return Object   the persistent object
    */
   Object merge(Object obj);
 
@@ -214,13 +214,13 @@ public interface DbSession extends Serializable {
 
   /** Save a new object.
    *
-   * @param obj
+   * @param obj to save
    */
   void save(Object obj);
 
   /** Delete an object
    *
-   * @param obj
+   * @param obj to delete
    */
   void delete(Object obj);
 

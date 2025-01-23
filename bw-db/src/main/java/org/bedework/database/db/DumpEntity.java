@@ -16,7 +16,7 @@
     specific language governing permissions and limitations
     under the License.
 */
-package org.bedework.database.hibernate;
+package org.bedework.database.db;
 
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
 import org.bedework.util.logging.BwLogger;
@@ -65,8 +65,8 @@ public class DumpEntity<T> implements Logged {
 
   /** Dump this entity as xml.
    *
-   * @param xml
-   * @param dtype
+   * @param xml emitter
+   * @param dtype how to dump
    */
   @NoWrap
   public void dump(final XmlEmit xml, final DumpType dtype) {
@@ -83,14 +83,14 @@ public class DumpEntity<T> implements Logged {
     dump(xml, DumpType.def, false);
   }
 
-  /* ====================================================================
+  /* ==============================================================
    *                   Private XML methods
-   * ==================================================================== */
+   * ============================================================== */
 
   /** Dump this entity as xml.
    *
    * @param xml emitter
-   * @param dtype
+   * @param dtype how to dump
    * @param fromCollection  true if the value is a member of a collection
    */
   @NoWrap
@@ -188,9 +188,9 @@ public class DumpEntity<T> implements Logged {
     }
   }
 
-  /* ====================================================================
+  /* ==============================================================
    *                   Private methods
-   * ==================================================================== */
+   * ============================================================== */
 
   private boolean dumpValue(final XmlEmit xml,
                             final Method m,
@@ -434,9 +434,9 @@ public class DumpEntity<T> implements Logged {
     return val.substring(3, 4).toLowerCase() + val.substring(4);
   }
 
-  /* ====================================================================
+  /* ==============================================================
    *                   Logged methods
-   * ==================================================================== */
+   * ============================================================== */
 
   private final BwLogger logger = new BwLogger();
 

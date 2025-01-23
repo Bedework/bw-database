@@ -22,6 +22,7 @@ import org.bedework.base.exc.BedeworkException;
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
 import org.bedework.base.exc.persist.BedeworkStaleStateException;
 import org.bedework.database.db.DbSession;
+import org.bedework.database.db.VersionedDbEntity;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
@@ -316,7 +317,7 @@ public class DbSessionImpl implements Logged, DbSession {
     }
 
     try {
-      q.setEntity(parName, parVal);
+      q.setParameter(parName, parVal);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -571,13 +572,12 @@ public class DbSessionImpl implements Logged, DbSession {
       return;
     }
 
-//    throw  new BedeworkDatabaseException("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");/*
     try {
-      if (!rolledback() && sess.isDirty()) {
+      if (!rolledback()) {
         sess.flush();
-      }
-      if ((tx != null) && !rolledback()) {
-        tx.commit();
+        if (tx != null) {
+          tx.commit();
+        }
       }
     } catch (final Throwable t) {
       if (exc == null) {
@@ -596,7 +596,6 @@ public class DbSessionImpl implements Logged, DbSession {
     if (exc != null) {
       throw exc;
     }
-//    */
   }
 
   private void handleException(final Throwable t) {
@@ -659,11 +658,9 @@ public class DbSessionImpl implements Logged, DbSession {
   }
 
   private void beforeDelete(final Object o) {
-    if (!(o instanceof VersionedDbEntity)) {
+    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
       return;
     }
-
-    final var ent = (VersionedDbEntity<?, ?>)o;
 
     ent.beforeDeletion();
   }
