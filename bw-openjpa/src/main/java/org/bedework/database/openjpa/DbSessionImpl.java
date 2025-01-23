@@ -91,7 +91,7 @@ public class DbSessionImpl implements Logged, DbSession {
   }
 
   @Override
-  public Throwable getException() {
+  public BedeworkException getException() {
     return exc;
   }
 
@@ -160,7 +160,7 @@ public class DbSessionImpl implements Logged, DbSession {
       try {
         obj = t.getClass().getClassLoader().loadClass("javax.persistence.OptimisticLockException");
       } catch (final ClassNotFoundException cnfe) {
-        exc = new BedeworkDatabaseException(t);
+        exc = new BedeworkDatabaseException(cnfe);
         throw exc;
       }
       if (t.getClass().isAssignableFrom(obj)) {
@@ -531,6 +531,20 @@ public class DbSessionImpl implements Logged, DbSession {
   }
 
   @Override
+  public void refresh(final Object obj) {
+    if (exc != null) {
+      // Didn't hear me last time?
+      throw exc;
+    }
+
+    try {
+      sess.refresh(obj);
+    } catch (final Throwable t) {
+      handleException(t);
+    }
+  }
+
+  @Override
   public void flush() {
     if (exc != null) {
       // Didn't hear me last time?
@@ -640,11 +654,6 @@ public class DbSessionImpl implements Logged, DbSession {
       throw exc;
     }
 
-    /*
-    if (t instanceof ConstraintViolationException) {
-      throw new BedeworkConstraintViolationException(t);
-    }*/
-
     exc = new BedeworkDatabaseException(t);
     throw exc;
   }
@@ -690,9 +699,9 @@ public class DbSessionImpl implements Logged, DbSession {
     error(t);
   }
 
-  /* ====================================================================
+  /* ==============================================================
    *                   Logged methods
-   * ==================================================================== */
+   * ============================================================== */
 
   private final BwLogger logger = new BwLogger();
 

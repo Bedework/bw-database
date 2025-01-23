@@ -224,6 +224,12 @@ public interface DbSession extends Serializable {
    */
   void delete(Object obj);
 
+  /** Refresh an object
+   *
+   * @param obj to refresh
+   */
+  void refresh(Object obj);
+
   /**
    */
   void flush();

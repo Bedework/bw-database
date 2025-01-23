@@ -18,6 +18,8 @@
 */
 package org.bedework.database.hibernate;
 
+import org.bedework.base.exc.BedeworkException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -52,7 +54,7 @@ public interface HibSession extends Serializable {
    *
    * @return current exception or null.
    */
-  Throwable getException();
+  BedeworkException getException();
 
   /** Begin a transaction
    *
@@ -223,6 +225,12 @@ public interface HibSession extends Serializable {
    * @param obj to delete
    */
   void delete(Object obj);
+
+  /** Refresh an object
+   *
+   * @param obj to refresh
+   */
+  void refresh(Object obj);
 
   /**
    */
