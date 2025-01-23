@@ -26,7 +26,6 @@ import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
@@ -35,9 +34,7 @@ import org.hibernate.StaleStateException;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
-import java.io.InputStream;
 import java.io.Serializable;
-import java.sql.Blob;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -222,16 +219,6 @@ public class HibSessionImpl implements Logged, HibSession {
       handleException(t);
       return null;
     }
-  }
-
-  @Override
-  public Blob getBlob(final byte[] val) {
-    return Hibernate.getLobCreator(sess).createBlob(val);
-  }
-
-  @Override
-  public Blob getBlob(final InputStream val, final long length) {
-    return Hibernate.getLobCreator(sess).createBlob(val, length);
   }
 
   @Override

@@ -29,7 +29,6 @@ import org.bedework.util.misc.Util;
 import org.apache.openjpa.persistence.OpenJPAEntityManager;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -223,11 +222,6 @@ public class DbSessionImpl implements Logged, DbSession {
       handleException(t);
       return null;
     }
-  }
-
-  @Override
-  public Blob getBlob(final byte[] val) {
-    return Hibernate.getLobCreator(sess).createBlob(val);
   }
 
   @Override

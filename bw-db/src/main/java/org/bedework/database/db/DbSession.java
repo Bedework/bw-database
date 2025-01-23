@@ -19,7 +19,6 @@
 package org.bedework.database.db;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -86,11 +85,6 @@ public interface DbSession extends Serializable {
    * @return a timestamp from the db
    */
   Timestamp getCurrentTimestamp(Class<?> tableClass);
-
-  /**
-   * @return a blob
-   */
-  Blob getBlob(byte[] val);
 
   /** Evict an object from the session.
    *
