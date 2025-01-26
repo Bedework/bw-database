@@ -11,7 +11,6 @@
   <name>Bedework: hibernate utility</name>
 
   <description>Hibernate utility classes</description>
-  <url>https://github.com/Bedework/bw-util-hibernate</url>
 
   <dependencies>
     <dependency>
