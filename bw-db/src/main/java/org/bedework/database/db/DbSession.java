@@ -33,7 +33,7 @@ import javax.persistence.EntityManagerFactory;
 public interface DbSession extends Serializable {
   /** Set up for a hibernate interaction. Throw the object away on exception.
    *
-   * @param factory
+   * @param factory to create session
    */
   void init(EntityManagerFactory factory);
 
@@ -188,7 +188,7 @@ public interface DbSession extends Serializable {
   /** Save a new object or update an object which may have been loaded in a
    * previous hibernate session
    *
-   * @param obj
+   * @param obj to save or update
    */
   void saveOrUpdate(Object obj);
 

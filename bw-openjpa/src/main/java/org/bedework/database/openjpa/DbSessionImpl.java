@@ -48,14 +48,14 @@ import javax.persistence.Query;
  * @author Mike Douglass douglm@rpi.edu
  */
 public class DbSessionImpl implements Logged, DbSession {
-  EntityManager sess;
-  transient EntityTransaction tx;
-  boolean rolledBack;
+  protected EntityManager sess;
+  protected transient EntityTransaction tx;
+  protected boolean rolledBack;
 
-  transient Query q;
+  protected transient Query q;
 
   /** Exception from this session. */
-  BedeworkException exc;
+  protected BedeworkException exc;
 
   private final SimpleDateFormat dateFormatter =
           new SimpleDateFormat("yyyy-MM-dd");
@@ -137,12 +137,6 @@ public class DbSessionImpl implements Logged, DbSession {
     }
 
     try {
-//      if (tx != null &&
-//          !tx.wasCommitted() &&
-//          !tx.wasRolledBack()) {
-        //if (debug()) {
-        //  debug("About to comnmit");
-        //}
       if ((tx != null) &&
               !rolledBack &&
               !tx.getRollbackOnly()) {

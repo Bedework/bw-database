@@ -76,21 +76,16 @@ public class UnversionedDbentity<K, T> extends DumpEntity<T>
    * @return Object of class T
    */
   @Override
-  @NoWrap
   public Object clone() {
     return null;
   }
 
-  /* (non-Javadoc)
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  @NoWrap
+  @Override
   public int compareTo(final T o) {
     throw new RuntimeException("compareTo must be implemented for a db object");
   }
 
   @Override
-  @NoWrap
   public int hashCode() {
     throw new RuntimeException("hashcode must be implemented for a db object");
   }

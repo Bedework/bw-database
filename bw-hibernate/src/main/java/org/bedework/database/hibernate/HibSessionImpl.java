@@ -49,14 +49,14 @@ import javax.persistence.OptimisticLockException;
  * @author Mike Douglass douglm@rpi.edu
  */
 public class HibSessionImpl implements Logged, HibSession {
-  Session sess;
-  transient Transaction tx;
-  boolean rolledBack;
+  protected Session sess;
+  protected transient Transaction tx;
+  protected boolean rolledBack;
 
-  transient Query q;
+  protected transient Query q;
 
   /** Exception from this session. */
-  BedeworkException exc;
+  protected BedeworkException exc;
 
   private final SimpleDateFormat dateFormatter =
           new SimpleDateFormat("yyyy-MM-dd");
@@ -137,12 +137,6 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-//      if (tx != null &&
-//          !tx.wasCommitted() &&
-//          !tx.wasRolledBack()) {
-        //if (debug()) {
-        //  debug("About to comnmit");
-        //}
       if ((tx != null) &&
               !rolledBack &&
               !tx.getRollbackOnly()) {
@@ -212,7 +206,7 @@ public class HibSessionImpl implements Logged, HibSession {
     try {
       final List<?> l = sess.createQuery(
               "select current_timestamp() from " +
-              tableClass.getName()).list();
+                      tableClass.getName()).list();
 
       if (Util.isEmpty(l)) {
         return null;
@@ -382,7 +376,7 @@ public class HibSessionImpl implements Logged, HibSession {
   }
 
   @Override
-  public List getList() {
+  public List<?> getList() {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -523,7 +517,7 @@ public class HibSessionImpl implements Logged, HibSession {
       beforeDelete(obj);
 
       evict(obj);
-      sess.delete(sess.merge(obj));
+      sess.remove(sess.merge(obj));
       deleteSubs(obj);
     } catch (final Throwable t) {
       handleException(t);
@@ -650,7 +644,8 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     if (t instanceof StaleStateException) {
-      throw new BedeworkStaleStateException(t);
+      exc = new BedeworkStaleStateException(t);
+      throw exc;
     }
 
     if (t instanceof OptimisticLockException) {

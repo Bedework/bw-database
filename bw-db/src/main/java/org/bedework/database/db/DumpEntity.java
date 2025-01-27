@@ -58,7 +58,6 @@ public class DumpEntity<T> implements Logged {
    *
    * @return boolean true to continue with dump.
    */
-  @NoWrap
   public boolean hasDumpValue() {
     return true;
   }
@@ -68,7 +67,6 @@ public class DumpEntity<T> implements Logged {
    * @param xml emitter
    * @param dtype how to dump
    */
-  @NoWrap
   public void dump(final XmlEmit xml, final DumpType dtype) {
     dump(xml, dtype, false);
   }
@@ -78,7 +76,6 @@ public class DumpEntity<T> implements Logged {
    *
    * @param xml emitter
    */
-  @NoWrap
   public void dump(final XmlEmit xml) {
     dump(xml, DumpType.def, false);
   }
@@ -93,7 +90,6 @@ public class DumpEntity<T> implements Logged {
    * @param dtype how to dump
    * @param fromCollection  true if the value is a member of a collection
    */
-  @NoWrap
   public void dump(final XmlEmit xml,
                    final DumpType dtype,
                    final boolean fromCollection) {
