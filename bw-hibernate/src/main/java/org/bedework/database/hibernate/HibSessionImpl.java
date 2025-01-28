@@ -453,23 +453,6 @@ public class HibSessionImpl implements Logged, HibSession {
   }
 
   @Override
-  public void saveOrUpdate(final Object obj) {
-    if (exc != null) {
-      // Didn't hear me last time?
-      throw exc;
-    }
-
-    try {
-      beforeSave(obj);
-
-      sess.saveOrUpdate(obj);
-      deleteSubs(obj);
-    } catch (final Throwable t) {
-      handleException(t);
-    }
-  }
-
-  @Override
   public Object get(final Class<?> cl,
                     final Serializable id) {
     if (exc != null) {
@@ -491,7 +474,7 @@ public class HibSessionImpl implements Logged, HibSession {
   }
 
   @Override
-  public void save(final Object obj) {
+  public void add(final Object obj) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;

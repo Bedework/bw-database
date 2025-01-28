@@ -35,9 +35,9 @@ import java.util.List;
 public interface HibSession extends Serializable {
   /** Set up for a hibernate interaction. Throw the object away on exception.
    *
-   * @param sessFactory
+   * @param factory to create session
    */
-  void init(SessionFactory sessFactory);
+  void init(SessionFactory factory);
 
   /**
    * @return Session
@@ -187,13 +187,6 @@ public interface HibSession extends Serializable {
    */
   Object merge(Object obj);
 
-  /** Save a new object or update an object which may have been loaded in a
-   * previous hibernate session
-   *
-   * @param obj
-   */
-  void saveOrUpdate(Object obj);
-
   /** Return an object of the given class with the given id if it is
    * already associated with this session. This must be called for specific
    * key queries or we can get a NonUniqueObjectException later.
@@ -214,11 +207,11 @@ public interface HibSession extends Serializable {
    */
   Object get(Class<?> cl, int id);
 
-  /** Save a new object.
+  /** Add a new object.
    *
-   * @param obj to save
+   * @param obj to add
    */
-  void save(Object obj);
+  void add(Object obj);
 
   /** Delete an object
    *

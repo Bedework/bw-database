@@ -18,6 +18,8 @@
 */
 package org.bedework.database.db;
 
+import org.bedework.base.exc.BedeworkException;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -52,7 +54,7 @@ public interface DbSession extends Serializable {
    *
    * @return current exception or null.
    */
-  Throwable getException();
+  BedeworkException getException();
 
   /** Begin a transaction
    *
@@ -185,13 +187,6 @@ public interface DbSession extends Serializable {
    */
   Object merge(Object obj);
 
-  /** Save a new object or update an object which may have been loaded in a
-   * previous hibernate session
-   *
-   * @param obj to save or update
-   */
-  void saveOrUpdate(Object obj);
-
   /** Return an object of the given class with the given id if it is
    * already associated with this session. This must be called for specific
    * key queries or we can get a NonUniqueObjectException later.
@@ -212,11 +207,11 @@ public interface DbSession extends Serializable {
    */
   Object get(Class<?> cl, int id);
 
-  /** Save a new object.
+  /** Add a new object.
    *
-   * @param obj to save
+   * @param obj to add
    */
-  void save(Object obj);
+  void add(Object obj);
 
   /** Delete an object
    *
