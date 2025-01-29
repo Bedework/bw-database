@@ -27,8 +27,6 @@ import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
 
-import org.apache.openjpa.persistence.OpenJPAEntityManager;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -115,6 +113,7 @@ public class DbSessionImpl implements Logged, DbSession {
         exc = new BedeworkDatabaseException("Transaction not started");
         throw exc;
       }
+
       tx.begin();
     } catch (final BedeworkException be) {
       exc = be;
@@ -138,9 +137,7 @@ public class DbSessionImpl implements Logged, DbSession {
     }
 
     try {
-      if ((tx != null) &&
-              !rolledBack &&
-              !tx.getRollbackOnly()) {
+      if (tx != null) {
         tx.commit();
       }
 
@@ -172,7 +169,7 @@ public class DbSessionImpl implements Logged, DbSession {
   public void rollback() {
 /*    if (exc != null) {
       // Didn't hear me last time?
-      throw  new BedeworkDatabaseException(exc);
+      throw new BedeworkDatabaseException(exc);
     }
 */
     if (debug()) {
@@ -224,11 +221,11 @@ public class DbSessionImpl implements Logged, DbSession {
   public void evict(final Object val) {
     if (exc != null) {
       // Didn't hear me last time?
-      throw  new BedeworkDatabaseException(exc);
+      throw new BedeworkDatabaseException(exc);
     }
 
     try {
-      ((OpenJPAEntityManager)sess).evict(val);
+      sess.detach(val);
     } catch (final Throwable t) {
       handleException(t);
     }

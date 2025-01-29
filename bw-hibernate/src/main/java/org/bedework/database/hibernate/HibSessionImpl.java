@@ -22,15 +22,13 @@ import org.bedework.base.exc.BedeworkException;
 import org.bedework.base.exc.persist.BedeworkConstraintViolationException;
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
 import org.bedework.base.exc.persist.BedeworkStaleStateException;
+import org.bedework.database.db.DbSession;
 import org.bedework.database.db.InterceptorDbEntity;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.StaleStateException;
-import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.Serializable;
@@ -40,6 +38,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.Query;
@@ -49,9 +50,9 @@ import javax.persistence.Query;
  *
  * @author Mike Douglass douglm@rpi.edu
  */
-public class HibSessionImpl implements Logged, HibSession {
-  protected Session sess;
-  protected transient Transaction tx;
+public class HibSessionImpl implements Logged, DbSession {
+  protected EntityManager sess;
+  protected transient EntityTransaction tx;
   protected boolean rolledBack;
 
   protected transient Query q;
@@ -63,9 +64,9 @@ public class HibSessionImpl implements Logged, HibSession {
           new SimpleDateFormat("yyyy-MM-dd");
 
   @Override
-  public void init(final SessionFactory sessFactory) {
+  public void init(final EntityManagerFactory factory) {
     try {
-      sess = sessFactory.openSession();
+      sess = factory.createEntityManager();
       rolledBack = false;
     } catch (final Throwable t) {
       exc = new BedeworkDatabaseException(t);
@@ -75,7 +76,7 @@ public class HibSessionImpl implements Logged, HibSession {
   }
 
   @Override
-  public Session getSession() {
+  public EntityManager getSession() {
     return sess;
   }
 
@@ -110,12 +111,14 @@ public class HibSessionImpl implements Logged, HibSession {
         throw exc;
       }
 
-      tx = sess.beginTransaction();
+      tx = sess.getTransaction();
       rolledBack = false;
       if (tx == null) {
         exc = new BedeworkDatabaseException("Transaction not started");
         throw exc;
       }
+
+      tx.begin();
     } catch (final BedeworkException be) {
       exc = be;
       throw be;
@@ -138,15 +141,13 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      if ((tx != null) &&
-              !rolledBack &&
-              !tx.getRollbackOnly()) {
+      if (tx != null) {
         tx.commit();
       }
 
       tx = null;
     } catch (final Throwable t) {
-      if (t instanceof OptimisticLockException) {
+      if (t instanceof StaleStateException) {
         exc = new BedeworkStaleStateException(t);
         throw exc;
       }
@@ -172,7 +173,7 @@ public class HibSessionImpl implements Logged, HibSession {
   public void rollback() {
 /*    if (exc != null) {
       // Didn't hear me last time?
-      throw  new BedeworkDatabaseException(exc);
+      throw new BedeworkDatabaseException(exc);
     }
 */
     if (debug()) {
@@ -207,7 +208,7 @@ public class HibSessionImpl implements Logged, HibSession {
     try {
       final List<?> l = sess.createQuery(
               "select current_timestamp() from " +
-                      tableClass.getName()).list();
+                      tableClass.getName()).getResultList();
 
       if (Util.isEmpty(l)) {
         return null;
@@ -228,7 +229,7 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      sess.evict(val);
+      sess.detach(val);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -428,7 +429,7 @@ public class HibSessionImpl implements Logged, HibSession {
 
     try {
       beforeUpdate(obj);
-      sess.update(obj);
+      sess.merge(obj);
       afterUpdate(obj);
     } catch (final Throwable t) {
       handleException(t);
@@ -464,7 +465,7 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      return sess.get(cl, id);
+      return sess.find(cl, id);
     } catch (final Throwable t) {
       handleException(t);
       return null;  // Don't get here
@@ -502,7 +503,7 @@ public class HibSessionImpl implements Logged, HibSession {
     try {
       beforeDelete(obj);
 
-      evict(obj);
+      // Do a merge to ensure not detached
       sess.remove(sess.merge(obj));
       afterDelete(obj);
     } catch (final Throwable t) {
