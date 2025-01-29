@@ -165,7 +165,7 @@ public interface HibSession extends Serializable {
    *
    * @return List          list from query
    */
-  List getList();
+  List<?> getList();
 
   /**
    * @return int number updated

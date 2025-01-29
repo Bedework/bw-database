@@ -22,12 +22,11 @@ import org.bedework.base.exc.BedeworkException;
 import org.bedework.base.exc.persist.BedeworkConstraintViolationException;
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
 import org.bedework.base.exc.persist.BedeworkStaleStateException;
-import org.bedework.database.db.VersionedDbEntity;
+import org.bedework.database.db.InterceptorDbEntity;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StaleStateException;
@@ -41,7 +40,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.Query;
 
 /** Convenience class to do the actual hibernate interaction. Intended for
  * one use only.
@@ -311,7 +312,7 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      q.setEntity(parName, parVal);
+      q.setParameter(parName, parVal);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -326,7 +327,7 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      q.setParameterList(parName, parVal);
+      q.setParameter(parName, parVal);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -368,7 +369,9 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      return q.uniqueResult();
+      return q.getSingleResult();
+    } catch (final NoResultException ignored) {
+      return null;
     } catch (final Throwable t) {
       handleException(t);
       return null;  // Don't get here
@@ -383,7 +386,7 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      final List<?> l = q.list();
+      final List<?> l = q.getResultList();
 
       if (l == null) {
         return new ArrayList<>();
@@ -424,9 +427,9 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      beforeSave(obj);
+      beforeUpdate(obj);
       sess.update(obj);
-      deleteSubs(obj);
+      afterUpdate(obj);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -440,10 +443,10 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      beforeSave(obj);
+      beforeUpdate(obj);
 
       obj = sess.merge(obj);
-      deleteSubs(obj);
+      afterUpdate(obj);
 
       return obj;
     } catch (final Throwable t) {
@@ -481,9 +484,9 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      beforeSave(obj);
-      sess.save(obj);
-      deleteSubs(obj);
+      beforeAdd(obj);
+      sess.persist(obj);
+      afterAdd(obj);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -501,7 +504,7 @@ public class HibSessionImpl implements Logged, HibSession {
 
       evict(obj);
       sess.remove(sess.merge(obj));
-      deleteSubs(obj);
+      afterDelete(obj);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -564,11 +567,8 @@ public class HibSessionImpl implements Logged, HibSession {
     }
 
     try {
-      if (!rolledback()) {
-        sess.flush();
-        if (tx != null) {
-          tx.commit();
-        }
+      if (!rolledback() && (tx != null)) {
+        tx.commit();
       }
     } catch (final Throwable t) {
       if (exc == null) {
@@ -645,36 +645,52 @@ public class HibSessionImpl implements Logged, HibSession {
     throw exc;
   }
 
-  private void beforeSave(final Object o) {
-    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
+  private void beforeAdd(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
 
-    ent.beforeSave();
+    ent.beforeAdd();
+  }
+
+  private void afterAdd(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
+      return;
+    }
+
+    ent.afterAdd();
+  }
+
+  private void beforeUpdate(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
+      return;
+    }
+
+    ent.beforeUpdate();
+  }
+
+  private void afterUpdate(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
+      return;
+    }
+
+    ent.afterUpdate();
   }
 
   private void beforeDelete(final Object o) {
-    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
 
     ent.beforeDeletion();
   }
 
-  private void deleteSubs(final Object o) {
-    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
+  private void afterDelete(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
 
-    final var subs = ent.getDeletedEntities();
-    if (subs == null) {
-      return;
-    }
-
-    for (final var sub: subs) {
-      evict(sub);
-      delete(sub);
-    }
+    ent.afterDeletion();
   }
 
   /** This is just in case we want to report rollback exceptions. Seems we're

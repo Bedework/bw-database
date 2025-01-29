@@ -22,7 +22,7 @@ import org.bedework.base.exc.BedeworkException;
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
 import org.bedework.base.exc.persist.BedeworkStaleStateException;
 import org.bedework.database.db.DbSession;
-import org.bedework.database.db.VersionedDbEntity;
+import org.bedework.database.db.InterceptorDbEntity;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
@@ -39,6 +39,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.Query;
 
@@ -369,6 +370,8 @@ public class DbSessionImpl implements Logged, DbSession {
 
     try {
       return q.getSingleResult();
+    } catch (final NoResultException ignored) {
+      return null;
     } catch (final Throwable t) {
       handleException(t);
       return null;  // Don't get here
@@ -424,9 +427,9 @@ public class DbSessionImpl implements Logged, DbSession {
     }
 
     try {
-      beforeSave(obj);
+      beforeUpdate(obj);
       sess.merge(obj);
-      deleteSubs(obj);
+      afterUpdate(obj);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -440,10 +443,10 @@ public class DbSessionImpl implements Logged, DbSession {
     }
 
     try {
-      beforeSave(obj);
+      beforeUpdate(obj);
 
       obj = sess.merge(obj);
-      deleteSubs(obj);
+      afterUpdate(obj);
 
       return obj;
     } catch (final Throwable t) {
@@ -481,9 +484,9 @@ public class DbSessionImpl implements Logged, DbSession {
     }
 
     try {
-      beforeSave(obj);
+      beforeAdd(obj);
       sess.persist(obj);
-      deleteSubs(obj);
+      afterAdd(obj);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -501,7 +504,7 @@ public class DbSessionImpl implements Logged, DbSession {
 
       evict(obj);
       sess.remove(sess.merge(obj));
-      deleteSubs(obj);
+      afterDelete(obj);
     } catch (final Throwable t) {
       handleException(t);
     }
@@ -635,36 +638,52 @@ public class DbSessionImpl implements Logged, DbSession {
     throw exc;
   }
 
-  private void beforeSave(final Object o) {
-    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
+  private void beforeAdd(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
 
-    ent.beforeSave();
+    ent.beforeAdd();
+  }
+
+  private void afterAdd(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
+      return;
+    }
+
+    ent.afterAdd();
+  }
+
+  private void beforeUpdate(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
+      return;
+    }
+
+    ent.beforeUpdate();
+  }
+
+  private void afterUpdate(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
+      return;
+    }
+
+    ent.afterUpdate();
   }
 
   private void beforeDelete(final Object o) {
-    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
 
     ent.beforeDeletion();
   }
 
-  private void deleteSubs(final Object o) {
-    if (!(o instanceof final VersionedDbEntity<?, ?> ent)) {
+  private void afterDelete(final Object o) {
+    if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
 
-    final var subs = ent.getDeletedEntities();
-    if (subs == null) {
-      return;
-    }
-
-    for (final var sub: subs) {
-      evict(sub);
-      delete(sub);
-    }
+    ent.afterDeletion();
   }
 
   /** This is just in case we want to report rollback exceptions. Seems we're
