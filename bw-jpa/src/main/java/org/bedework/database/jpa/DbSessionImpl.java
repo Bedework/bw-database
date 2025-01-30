@@ -16,7 +16,7 @@
     specific language governing permissions and limitations
     under the License.
 */
-package org.bedework.database.openjpa;
+package org.bedework.database.jpa;
 
 import org.bedework.base.exc.BedeworkException;
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
@@ -586,12 +586,12 @@ public class DbSessionImpl implements Logged, DbSession {
     }
   }
 
-  private void handleException(final Throwable t) {
+  protected void handleException(final Throwable t) {
     handleException(t, null);
   }
 
-  private void handleException(final Throwable t,
-                               final Object o) {
+  protected void handleException(final Throwable t,
+                                 final Object o) {
     try {
       if (debug()) {
         debug("handleException called");
@@ -632,7 +632,7 @@ public class DbSessionImpl implements Logged, DbSession {
     throw exc;
   }
 
-  private void beforeAdd(final Object o) {
+  protected void beforeAdd(final Object o) {
     if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
@@ -640,7 +640,7 @@ public class DbSessionImpl implements Logged, DbSession {
     ent.beforeAdd();
   }
 
-  private void afterAdd(final Object o) {
+  protected void afterAdd(final Object o) {
     if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
@@ -648,7 +648,7 @@ public class DbSessionImpl implements Logged, DbSession {
     ent.afterAdd();
   }
 
-  private void beforeUpdate(final Object o) {
+  protected void beforeUpdate(final Object o) {
     if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
@@ -656,7 +656,7 @@ public class DbSessionImpl implements Logged, DbSession {
     ent.beforeUpdate();
   }
 
-  private void afterUpdate(final Object o) {
+  protected void afterUpdate(final Object o) {
     if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
@@ -664,7 +664,7 @@ public class DbSessionImpl implements Logged, DbSession {
     ent.afterUpdate();
   }
 
-  private void beforeDelete(final Object o) {
+  protected void beforeDelete(final Object o) {
     if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
@@ -672,7 +672,7 @@ public class DbSessionImpl implements Logged, DbSession {
     ent.beforeDeletion();
   }
 
-  private void afterDelete(final Object o) {
+  protected void afterDelete(final Object o) {
     if (!(o instanceof final InterceptorDbEntity ent)) {
       return;
     }
@@ -685,15 +685,15 @@ public class DbSessionImpl implements Logged, DbSession {
    *
    * @param t   Throwable from the rollback
    */
-  private void rollbackException(final Throwable t) {
+  public void rollbackException(final Throwable t) {
     error(t);
   }
 
-  /* ==============================================================
+  /* ====================================================
    *                   Logged methods
-   * ============================================================== */
+   * ==================================================== */
 
-  private final BwLogger logger = new BwLogger();
+  protected final BwLogger logger = new BwLogger();
 
   @Override
   public BwLogger getLogger() {

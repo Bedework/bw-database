@@ -26,5 +26,6 @@
     <module>bw-hibernate</module>
     <module>bw-db</module>
     <module>bw-openjpa</module>
+    <module>bw-jpa</module>
   </modules>
 </project>

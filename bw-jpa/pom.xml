@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.bedework.database</groupId>
+    <artifactId>bw-database</artifactId>
+    <version>5.0.5-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>bw-jpa</artifactId>
+  <name>Bedework: jpa utility</name>
+
+  <description>jpa utility classes</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.bedework.database</groupId>
+      <artifactId>bw-db</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.bedework</groupId>
+      <artifactId>bw-util-config</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.bedework</groupId>
+      <artifactId>bw-util-logging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.bedework</groupId>
+      <artifactId>bw-util-misc</artifactId>
+    </dependency>
+  </dependencies>
+</project>
