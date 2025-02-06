@@ -9,7 +9,7 @@
 
   <groupId>org.bedework.database</groupId>
   <artifactId>bw-database</artifactId>
-  <version>5.0.5</version>
+  <version>5.0.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Bedework: database specific modules</name>
