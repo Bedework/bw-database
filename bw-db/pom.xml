@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>bw-db</artifactId>
+  <name>Bedework: database orm independent modules</name>
 
   <dependencies>
     <dependency>

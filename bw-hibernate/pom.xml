@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>bw-hibernate</artifactId>
-  <name>Bedework: hibernate utility</name>
+  <name>Bedework: database hibernate modules</name>
 
   <description>Hibernate utility classes</description>
 
