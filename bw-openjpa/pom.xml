@@ -22,6 +22,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.bedework.database</groupId>
+      <artifactId>bw-jpa</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.bedework</groupId>
       <artifactId>bw-util-config</artifactId>
     </dependency>

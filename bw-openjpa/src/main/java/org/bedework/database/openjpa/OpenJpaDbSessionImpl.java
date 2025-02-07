@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-        
+
     http://www.apache.org/licenses/LICENSE-2.0
-        
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -16,29 +16,14 @@
     specific language governing permissions and limitations
     under the License.
 */
-package org.bedework.database.hibernate.h2;
+package org.bedework.database.openjpa;
 
-import org.hibernate.dialect.function.StandardSQLFunction;
-import org.hibernate.type.IntegerType;
+import org.bedework.database.jpa.DbSessionImpl;
 
-import java.sql.Types;
-
-/**
- * Update the hibernate distributed dialect. Effectively apply changes
- * referred to in http://opensource.atlassian.com/projects/hibernate/browse/HHH-3401
+/** Convenience class to do the actual hibernate interaction. Intended for
+ * one use only.
  *
+ * @author Mike Douglass douglm@rpi.edu
  */
-public class H2Dialect extends org.hibernate.dialect.H2Dialect {
-  /**
-   *
-   */
-  public H2Dialect() {
-    super();
-
-    registerColumnType(Types.BIT, "boolean");
-    registerColumnType(Types.NUMERIC, "decimal($p,$s)");
-
-    registerFunction("quarter",
-                     new StandardSQLFunction("quarter", IntegerType.INSTANCE));
-  }
+public class OpenJpaDbSessionImpl extends DbSessionImpl {
 }

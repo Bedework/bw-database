@@ -19,7 +19,9 @@
 package org.bedework.database.hibernate;
 
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
+import org.bedework.database.db.DbSessionFactoryProvider;
 
+import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -28,12 +30,26 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-/** Convenience class to do the actual hibernate interaction. Intended for
- * one use only.
+/** Convenience class to do the actual hibernate interaction.
+ * Should be saved as a static object
  *
- * @author Mike Douglass douglm@rpi.edu
+ * @author Mike Douglass bedework.org
  */
-public class HibSessionFactory {
+public class HibSessionFactoryProvider
+        implements DbSessionFactoryProvider {
+  private EntityManagerFactory sessionFactory;
+
+  @Override
+  public void init(
+          final List<String> props) {
+    sessionFactory = getSessionFactory(props);
+  }
+
+  @Override
+  public EntityManagerFactory getSessionFactory() {
+    return sessionFactory;
+  }
+
   /**
    * @param hibProps possibly null list of hibernate properties
    * @return the SessionFactory

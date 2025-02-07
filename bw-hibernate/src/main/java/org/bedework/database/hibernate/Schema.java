@@ -8,15 +8,10 @@ import org.bedework.util.jmx.InfoLines;
 import org.hibernate.boot.MetadataBuilder;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.schema.TargetType;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.EnumSet;
 
 /** Handle the export of schemas
  * 
@@ -39,7 +34,7 @@ public class Schema {
       infoLines.addLn("Started export of schema");
 
       final long startTime = System.currentTimeMillis();
-
+/* REdo this as a jpa feature
       final SchemaExport se = new SchemaExport();
 //      if (getDelimiter() != null) {
 //        se.setDelimiter(getDelimiter());
@@ -52,7 +47,7 @@ public class Schema {
       se.setManageNamespaces(true);
         /* There appears to be a bug in the hibernate code. Everybody initialises
         this to /import.sql. Set to null causes an NPE
-        Make sure it refers to a non-existant file */
+        Make sure it refers to a non-existent file * /
       //se.setImportFile("not-a-file.sql");
 
       final EnumSet<TargetType> targets = EnumSet.noneOf(TargetType.class );
@@ -65,21 +60,6 @@ public class Schema {
         targets.add(TargetType.SCRIPT);
       }
 
-      /*
-      final BootstrapServiceRegistry bsr = 
-              new BootstrapServiceRegistryBuilder().build();
-      final StandardServiceRegistryBuilder ssrBuilder = 
-              new StandardServiceRegistryBuilder(bsr);
-
-      if (resourcePath == null) {
-        ssrBuilder.configure();
-      } else {
-        ssrBuilder.configure(resourcePath);
-      }
-      ssrBuilder.applySettings(hibConfig);
-
-      final StandardServiceRegistry ssr = ssrBuilder.build();
-       */
       final Configuration cfg =
               hibConfig.getHibConfiguration("hibernate.cfg.xml"
               );
@@ -100,7 +80,7 @@ public class Schema {
 
       infoLines.addLn("Elapsed time: " + minutes + ":" +
                               twoDigits(seconds));
-      
+      */
       return true;
     } catch (final Throwable t) {
       final StringWriter sw = new StringWriter();

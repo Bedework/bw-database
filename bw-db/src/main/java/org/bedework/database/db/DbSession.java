@@ -20,20 +20,27 @@ package org.bedework.database.db;
 
 import org.bedework.base.exc.BedeworkException;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /** Interface to do hibernate interactions.
  *
  * @author Mike Douglass douglm at rpi.edu
  */
 public interface DbSession extends Serializable {
-  /** Set up for a hibernate interaction. Throw the object away on exception.
+  /** Set up for database interactions using an initialised
+   * factory povider. Throw the object away on exception.
+   *
+   * @param provider to create factory
+   */
+  void init(DbSessionFactoryProvider provider);
+
+  /** Set up for database interactions. Throw the object away on exception.
    *
    * @param factory to create session
    */

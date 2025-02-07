@@ -27,7 +27,7 @@ import org.bedework.database.jpa.DbSessionImpl;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
 
-import javax.persistence.OptimisticLockException;
+import jakarta.persistence.OptimisticLockException;
 
 /** Class to do the actual database interaction.
  *
@@ -55,7 +55,8 @@ public class HibSessionImpl extends DbSessionImpl {
 
       final Class<?> obj;
       try {
-        obj = t.getClass().getClassLoader().loadClass("javax.persistence.OptimisticLockException");
+        obj = t.getClass().getClassLoader().loadClass(
+                "jakarta.persistence.OptimisticLockException");
       } catch (final ClassNotFoundException cnfe) {
         exc = new BedeworkDatabaseException(cnfe);
         throw exc;

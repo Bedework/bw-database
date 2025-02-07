@@ -22,10 +22,18 @@ import org.bedework.base.exc.BedeworkException;
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
 import org.bedework.base.exc.persist.BedeworkStaleStateException;
 import org.bedework.database.db.DbSession;
+import org.bedework.database.db.DbSessionFactoryProvider;
 import org.bedework.database.db.InterceptorDbEntity;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.misc.Util;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.Query;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -33,13 +41,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.Query;
 
 /** Convenience class to do the actual hibernate interaction. Intended for
  * one use only.
@@ -58,6 +59,11 @@ public class DbSessionImpl implements Logged, DbSession {
 
   private final SimpleDateFormat dateFormatter =
           new SimpleDateFormat("yyyy-MM-dd");
+
+  @Override
+  public void init(final DbSessionFactoryProvider provider) {
+    init(provider.getSessionFactory());
+  }
 
   @Override
   public void init(final EntityManagerFactory factory) {
@@ -150,7 +156,8 @@ public class DbSessionImpl implements Logged, DbSession {
 
       final Class<?> obj;
       try {
-        obj = t.getClass().getClassLoader().loadClass("javax.persistence.OptimisticLockException");
+        obj = t.getClass().getClassLoader().loadClass(
+                "jakarta.persistence.OptimisticLockException");
       } catch (final ClassNotFoundException cnfe) {
         exc = new BedeworkDatabaseException(cnfe);
         throw exc;
