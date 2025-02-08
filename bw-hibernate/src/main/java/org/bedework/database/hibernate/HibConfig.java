@@ -3,7 +3,7 @@
 */
 package org.bedework.database.hibernate;
 
-import org.bedework.util.config.HibernateConfigBase;
+import org.bedework.util.config.OrmConfigBase;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 
@@ -23,15 +23,15 @@ import java.util.Properties;
  * Time: 00:17
  */
 public class HibConfig implements Logged {
-  private final HibernateConfigBase<?> config;
+  private final OrmConfigBase<?> config;
   private final ClassLoader classLoader;
   
-  public HibConfig(final HibernateConfigBase<?> config) {
+  public HibConfig(final OrmConfigBase<?> config) {
     this.config = config;
     this.classLoader = config.getClass().getClassLoader();
   }
 
-  public HibConfig(final HibernateConfigBase<?> config,
+  public HibConfig(final OrmConfigBase<?> config,
                    final ClassLoader classLoader) {
     this.config = config;
     this.classLoader = classLoader;
@@ -117,7 +117,7 @@ public class HibConfig implements Logged {
     try {
       final StringBuilder sb = new StringBuilder();
 
-      final List<String> ps = config.getHibernateProperties();
+      final List<String> ps = config.getOrmProperties();
 
       for (final String p: ps) {
         sb.append(p);

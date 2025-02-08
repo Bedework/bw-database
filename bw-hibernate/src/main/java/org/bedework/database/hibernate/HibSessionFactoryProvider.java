@@ -19,16 +19,14 @@
 package org.bedework.database.hibernate;
 
 import org.bedework.base.exc.persist.BedeworkDatabaseException;
+import org.bedework.database.db.DbSession;
 import org.bedework.database.db.DbSessionFactoryProvider;
 
 import jakarta.persistence.EntityManagerFactory;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.io.StringReader;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 /** Convenience class to do the actual hibernate interaction.
  * Should be saved as a static object
@@ -52,25 +50,26 @@ public class HibSessionFactoryProvider
   }
 
   /**
-   * @param hibProps possibly null list of hibernate properties
+   * @param props possibly null list of hibernate properties
    * @return the SessionFactory
    */
-  public static SessionFactory getSessionFactory(
-          final List<String> hibProps) {
+  public EntityManagerFactory getSessionFactory(
+          final List<String> props) {
+    return getSessionFactory(makeProperties(props));
+  }
+
+
+  @Override
+  public EntityManagerFactory getSessionFactory(
+          final Properties props) {
     /* Get a new hibernate session factory. This is configured from an
        * application resource hibernate.cfg.xml together with some run time values
        */
     try {
       final Configuration conf = new Configuration();
 
-      if (hibProps != null) {
-        final String sb = hibProps.stream().map(p -> p + "\n")
-                                  .collect(Collectors.joining());
-
-        final Properties hprops = new Properties();
-        hprops.load(new StringReader(sb));
-
-        conf.addProperties(hprops);
+      if (props != null) {
+        conf.addProperties(props);
       }
 
       conf.configure();
@@ -79,5 +78,13 @@ public class HibSessionFactoryProvider
     } catch (final Throwable t) {
       throw new BedeworkDatabaseException(t);
     }
+  }
+
+  @Override
+  public DbSession getNewSession() {
+    final var sess = new HibSessionImpl();
+    sess.init(this);
+
+    return sess;
   }
 }
