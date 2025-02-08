@@ -40,9 +40,10 @@ public class HibSessionFactoryProvider
   private EntityManagerFactory sessionFactory;
 
   @Override
-  public void init(
+  public DbSessionFactoryProvider init(
           final List<String> props) {
     sessionFactory = getSessionFactory(props);
+    return this;
   }
 
   @Override

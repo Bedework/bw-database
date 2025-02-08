@@ -13,7 +13,7 @@ public interface DbSessionFactoryProvider {
    *
    * @param props db specific properties
    */
-  void init(List<String> props);
+  DbSessionFactoryProvider init(List<String> props);
 
   /**
    *
