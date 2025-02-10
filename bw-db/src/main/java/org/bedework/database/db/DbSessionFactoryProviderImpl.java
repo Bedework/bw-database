@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 public class DbSessionFactoryProviderImpl
         implements DbSessionFactoryProvider {
   private static final String hibernateProvider =
-          "org.bedework.database.db.hibernate.HibSessionFactoryProvider";
+          "org.bedework.database.hibernate.HibSessionFactoryProvider";
   private static final String openjpaProvider =
-          "org.bedework.database.db.openjpa.OpenJPASessionFactoryProvider";
+          "org.bedework.database.openjpa.OpenJPASessionFactoryProvider";
 
   private DbSessionFactoryProvider provider;
 
@@ -38,12 +38,12 @@ public class DbSessionFactoryProviderImpl
       } else if (ormName.equals("openjpa")) {
         orm = openjpaProvider;
       } else {
-        throw new BedeworkException("Unknown orm." + ormName);
+        throw new BedeworkException("Unknown orm: " + ormName);
       }
 
       final ClassLoader loader = Thread.currentThread()
                                        .getContextClassLoader();
-      final Class<?> cl = loader.loadClass(ormName);
+      final Class<?> cl = loader.loadClass(orm);
       final Object o = cl.getDeclaredConstructor()
                          .newInstance();
       provider = (DbSessionFactoryProvider)o;
