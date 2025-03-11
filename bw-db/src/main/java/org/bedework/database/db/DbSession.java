@@ -34,7 +34,7 @@ import java.util.List;
  */
 public interface DbSession extends Serializable {
   /** Set up for database interactions using an initialised
-   * factory povider. Throw the object away on exception.
+   * factory provider. Throw the object away on exception.
    *
    * @param provider to create factory
    */
