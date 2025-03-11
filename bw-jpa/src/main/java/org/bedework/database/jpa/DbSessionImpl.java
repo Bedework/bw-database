@@ -424,23 +424,12 @@ public class DbSessionImpl implements Logged, DbSession {
   }
 
   @Override
-  public void update(final Object obj) {
-    if (exc != null) {
-      // Didn't hear me last time?
-      throw exc;
-    }
-
-    try {
-      beforeUpdate(obj);
-      sess.merge(obj);
-      afterUpdate(obj);
-    } catch (final Throwable t) {
-      handleException(t);
-    }
+  public Object update(final Object obj) {
+    return merge(obj);
   }
 
   @Override
-  public Object merge(Object obj) {
+  public Object merge(final Object obj) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -448,11 +437,10 @@ public class DbSessionImpl implements Logged, DbSession {
 
     try {
       beforeUpdate(obj);
+      final var merged = sess.merge(obj);
+      afterUpdate(merged);
 
-      obj = sess.merge(obj);
-      afterUpdate(obj);
-
-      return obj;
+      return merged;
     } catch (final Throwable t) {
       handleException(t, obj);
       return null;

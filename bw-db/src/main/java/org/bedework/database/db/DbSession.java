@@ -183,8 +183,9 @@ public interface DbSession extends Serializable {
    * session
    *
    * @param obj to update
+   * @return Object   the persistent object
    */
-  void update(Object obj);
+  Object update(Object obj);
 
   /** Merge and update an object which may have been loaded in a previous hibernate
    * session
