@@ -82,9 +82,6 @@ public class HibSessionFactoryProvider
 
   @Override
   public DbSession getNewSession() {
-    final var sess = new HibSessionImpl();
-    sess.init(this);
-
-    return sess;
+    return new HibSessionImpl().init(this);
   }
 }

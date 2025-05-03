@@ -61,12 +61,13 @@ public class DbSessionImpl implements Logged, DbSession {
           new SimpleDateFormat("yyyy-MM-dd");
 
   @Override
-  public void init(final DbSessionFactoryProvider provider) {
+  public DbSession init(final DbSessionFactoryProvider provider) {
     init(provider.getSessionFactory());
+    return this;
   }
 
   @Override
-  public void init(final EntityManagerFactory factory) {
+  public DbSession init(final EntityManagerFactory factory) {
     try {
       sess = factory.createEntityManager();
       rolledBack = false;
@@ -75,6 +76,7 @@ public class DbSessionImpl implements Logged, DbSession {
       tx = null;  // not even started. Should be null anyway
       close();
     }
+    return this;
   }
 
   @Override
@@ -101,7 +103,7 @@ public class DbSessionImpl implements Logged, DbSession {
   }
 
   @Override
-  public void beginTransaction() {
+  public DbSession beginTransaction() {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -128,6 +130,7 @@ public class DbSessionImpl implements Logged, DbSession {
       exc = new BedeworkDatabaseException(t);
       throw exc;
     }
+    return this;
   }
 
   @Override
@@ -225,7 +228,7 @@ public class DbSessionImpl implements Logged, DbSession {
   }
 
   @Override
-  public void evict(final Object val) {
+  public DbSession evict(final Object val) {
     if (exc != null) {
       // Didn't hear me last time?
       throw new BedeworkDatabaseException(exc);
@@ -236,10 +239,11 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void createQuery(final String s) {
+  public DbSession createQuery(final String s) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -250,10 +254,12 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setString(final String parName, final String parVal) {
+  public DbSession setString(final String parName,
+                             final String parVal) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -264,10 +270,12 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setBool(final String parName, final boolean parVal) {
+  public DbSession setBool(final String parName,
+                           final boolean parVal) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -278,10 +286,12 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setInt(final String parName, final int parVal) {
+  public DbSession setInt(final String parName,
+                          final int parVal) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -292,10 +302,12 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setLong(final String parName, final long parVal) {
+  public DbSession setLong(final String parName,
+                           final long parVal) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -306,10 +318,12 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setEntity(final String parName, final Object parVal) {
+  public DbSession setEntity(final String parName,
+                             final Object parVal) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -320,11 +334,13 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setParameterList(final String parName,
-                               final Collection<?> parVal) {
+  public DbSession setParameterList(
+          final String parName,
+          final Collection<?> parVal) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -335,10 +351,11 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setFirstResult(final int val) {
+  public DbSession setFirstResult(final int val) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -349,10 +366,11 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void setMaxResults(final int val) {
+  public DbSession setMaxResults(final int val) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -363,6 +381,7 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
@@ -469,7 +488,7 @@ public class DbSessionImpl implements Logged, DbSession {
   }
 
   @Override
-  public void add(final Object obj) {
+  public DbSession add(final Object obj) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -482,10 +501,11 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void delete(final Object obj) {
+  public DbSession delete(final Object obj) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -500,10 +520,11 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void refresh(final Object obj) {
+  public DbSession refresh(final Object obj) {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -514,10 +535,11 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void flush() {
+  public DbSession flush() {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -531,10 +553,11 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   @Override
-  public void clear() {
+  public DbSession clear() {
     if (exc != null) {
       // Didn't hear me last time?
       throw exc;
@@ -548,14 +571,15 @@ public class DbSessionImpl implements Logged, DbSession {
     } catch (final Throwable t) {
       handleException(t);
     }
+    return this;
   }
 
   /**
    */
   @Override
-  public void close() {
+  public DbSession close() {
     if (sess == null) {
-      return;
+      return this;
     }
 
     try {
@@ -579,6 +603,7 @@ public class DbSessionImpl implements Logged, DbSession {
     if (exc != null) {
       throw exc;
     }
+    return this;
   }
 
   protected void handleException(final Throwable t) {

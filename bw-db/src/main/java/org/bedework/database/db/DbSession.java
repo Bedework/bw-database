@@ -30,7 +30,7 @@ import java.util.List;
 
 /** Interface to do hibernate interactions.
  *
- * @author Mike Douglass douglm at rpi.edu
+ * @author Mike Douglass douglm
  */
 public interface DbSession extends Serializable {
   /** Set up for database interactions using an initialised
@@ -38,13 +38,13 @@ public interface DbSession extends Serializable {
    *
    * @param provider to create factory
    */
-  void init(DbSessionFactoryProvider provider);
+  DbSession init(DbSessionFactoryProvider provider);
 
   /** Set up for database interactions. Throw the object away on exception.
    *
    * @param factory to create session
    */
-  void init(EntityManagerFactory factory);
+  DbSession init(EntityManagerFactory factory);
 
   /**
    * @return Session
@@ -66,7 +66,7 @@ public interface DbSession extends Serializable {
   /** Begin a transaction
    *
    */
-  void beginTransaction();
+  DbSession beginTransaction();
 
   /** Return true if we have a transaction started
    *
@@ -99,68 +99,68 @@ public interface DbSession extends Serializable {
    *
    * @param val          Object to evict
    */
-  void evict(Object val);
+  DbSession evict(Object val);
 
   /** Create a query ready for parameter replacement or execution.
    *
    * @param s             String hibernate query
    */
-  void createQuery(String s);
+  DbSession createQuery(String s);
 
   /** Set the named parameter with the given value
    *
    * @param parName     String parameter name
    * @param parVal      String parameter value
    */
-  void setString(String parName, String parVal);
+  DbSession setString(String parName, String parVal);
 
   /** Set the named parameter with the given value
    *
    * @param parName     String parameter name
    * @param parVal      boolean parameter value
    */
-  void setBool(String parName, boolean parVal);
+  DbSession setBool(String parName, boolean parVal);
 
   /** Set the named parameter with the given value
    *
    * @param parName     String parameter name
    * @param parVal      int parameter value
    */
-  void setInt(String parName, int parVal);
+  DbSession setInt(String parName, int parVal);
 
   /** Set the named parameter with the given value
    *
    * @param parName     String parameter name
    * @param parVal      long parameter value
    */
-  void setLong(String parName, long parVal);
+  DbSession setLong(String parName, long parVal);
 
   /** Set the named parameter with the given value
    *
    * @param parName     String parameter name
    * @param parVal      Object parameter value
    */
-  void setEntity(String parName, Object parVal);
+  DbSession setEntity(String parName, Object parVal);
 
   /** Set the named parameter with the given Collection
    *
    * @param parName     String parameter name
    * @param parVal      Collection parameter value
    */
-  void setParameterList(String parName,
+  DbSession setParameterList(String parName,
                         Collection<?> parVal);
 
   /** Set the first result for a paged batch
    *
    * @param val      int first index
    */
-  void setFirstResult(int val);
+  DbSession setFirstResult(int val);
 
   /** Set the max number of results for a paged batch
    *
    * @param val      int max number
    */
-  void setMaxResults(int val);
+  DbSession setMaxResults(int val);
 
   /** Return the single object resulting from the query.
    *
@@ -219,29 +219,29 @@ public interface DbSession extends Serializable {
    *
    * @param obj to add
    */
-  void add(Object obj);
+  DbSession add(Object obj);
 
   /** Delete an object
    *
    * @param obj to delete
    */
-  void delete(Object obj);
+  DbSession delete(Object obj);
 
   /** Refresh an object
    *
    * @param obj to refresh
    */
-  void refresh(Object obj);
+  DbSession refresh(Object obj);
 
   /**
    */
-  void flush();
+  DbSession flush();
 
   /**
    */
-  void clear();
+  DbSession clear();
 
   /**
    */
-  void close();
+  DbSession close();
 }
