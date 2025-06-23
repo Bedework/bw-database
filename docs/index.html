@@ -16,80 +16,100 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">Introduction</a></li>
-<li><a href="#config">1. Util-config</a>
-<ul class="sectlevel2">
-<li><a href="#_using_this_project">1.1. Using this project</a></li>
-</ul>
-</li>
-<li><a href="#jmx">2. Util-jmx</a></li>
-<li><a href="#reports">3. Reports</a></li>
+<li><a href="#db">1. Database Base classes</a></li>
+<li><a href="#db-jpa">2. Database JPA classes</a></li>
+<li><a href="#db-openjpa">3. Database Openjpa classes</a></li>
+<li><a href="#db-hibernate">4. Database Hibernate classes</a></li>
+<li><a href="#reports">5. Reports</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>These packages support the configuration mechanisms used by bedework.</p>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This project contains a number of modules used for configuration in bedework.</p>
-</div>
-<div class="paragraph">
-<p>The util-options package is not used now but remains here for the time being.</p>
+<p>This project contains a number of modules used for database access in bedework.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="config">1. Util-config</h2>
+<h2 id="db">1. Database Base classes</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Provides classes and interfaces to save and lload XML formatted configuration options from files.</p>
+<p>Provides classes and interfaces used by the other database modules.</p>
 </div>
 <div class="paragraph">
-<p>It was intended to expand this package to load and save data via WebDAV. This may yet happen.</p>
-</div>
-<div class="sect2">
-<h3 id="_using_this_project">1.1. Using this project</h3>
-<div class="paragraph">
-<p>Add the artifact(s) as a dependency to your project:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>      &lt;dependency&gt;
-        &lt;groupId&gt;org.bedework&lt;/groupId&gt;
-        &lt;artifactId&gt;bw-util-config&lt;/artifactId&gt;
-      &lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="jmx">2. Util-jmx</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Provides jmx access to the configuration data supported by util-config.
+<p>These are independent of any implementation. Includes a factory which uses a system property to determine which flavor of implementation to load.
 === Using this project
 Add the artifact(s) as a dependency to your project:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>      &lt;dependency&gt;
-        &lt;groupId&gt;org.bedework&lt;/groupId&gt;
-        &lt;artifactId&gt;bw-util-jmx&lt;/artifactId&gt;
+        &lt;groupId&gt;org.bedework.database&lt;/groupId&gt;
+        &lt;artifactId&gt;bw-db&lt;/artifactId&gt;
       &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="reports">3. Reports</h2>
+<h2 id="db-jpa">2. Database JPA classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Provides jpa compliant implementation. Can be overridden to provide an orm specific implementation.
+=== Using this project
+Add the artifact(s) as a dependency to your project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>      &lt;dependency&gt;
+        &lt;groupId&gt;org.bedework.database&lt;/groupId&gt;
+        &lt;artifactId&gt;bw-jpa&lt;/artifactId&gt;
+      &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="db-openjpa">3. Database Openjpa classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Provides an openjpa specific implementation of the jpa classes.
+=== Using this project
+Add the artifact(s) as a dependency to your project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>      &lt;dependency&gt;
+        &lt;groupId&gt;org.bedework.database&lt;/groupId&gt;
+        &lt;artifactId&gt;bw-openjpa&lt;/artifactId&gt;
+      &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="db-hibernate">4. Database Hibernate classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Provides a hibernate specific implementation of the jpa classes.
+=== Using this project
+Add the artifact(s) as a dependency to your project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>      &lt;dependency&gt;
+        &lt;groupId&gt;org.bedework.database&lt;/groupId&gt;
+        &lt;artifactId&gt;bw-hibernate&lt;/artifactId&gt;
+      &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reports">5. Reports</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="reports/dependency-check-report.html">Dependency check</a></p>
@@ -99,7 +119,7 @@ Add the artifact(s) as a dependency to your project:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-06-23 12:30:06 -0400
+Last updated 2025-06-23 15:32:21 -0400
 </div>
 </div>
 </body>
