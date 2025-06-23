@@ -1,0 +1,40 @@
+= Bedework Configuration modules.
+:title: Bedework Configuration modules.
+:safe-mode-unsafe:
+:docinfo: shared
+:docinfodir: ./docinfo
+:docinfo2:
+:scriptsdir: ./tocbot-3.0.2
+:imagesdir: ./resources/
+:toc: left
+:toclevels: 4
+:sectnumlevels: 4
+//
+:reports-dir: reports/
+:db-dir: db/
+:jpa-dir: jpa/
+:openjpa-dir: openjpa/
+:hibernate-dir: hibernate/
+//
+:sectnums!:
+
+include::introduction.adoc[]
+
+:sectnums:
+
+include::{db-dir}overview.adoc[]
+include::{db-dir}using.adoc[]
+
+include::{jpa-dir}overview.adoc[]
+include::{jpa-dir}using.adoc[]
+
+include::{openjpa-dir}overview.adoc[]
+include::{openjpa-dir}using.adoc[]
+
+include::{hibernate-dir}overview.adoc[]
+include::{hibernate-dir}using.adoc[]
+
+
+[[reports]]
+== Reports
+link:reports/dependency-check-report.html[Dependency check]

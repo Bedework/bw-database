@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bedework</groupId>
     <artifactId>bedework-parent</artifactId>
-    <version>200-SNAPSHOT</version>
+    <version>205-SNAPSHOT</version>
   </parent>
 
   <groupId>org.bedework.database</groupId>
@@ -21,6 +21,30 @@
     <developerConnection>scm:git:git@github.com:Bedework/bw-database.git</developerConnection>
     <url>https://github.com/Bedework/bw-database</url>
   </scm>
+
+  <developers>
+    <developer>
+      <name>Mike Douglass</name>
+      <organization>
+        Bedework Commercial Services
+      </organization>
+      <organizationUrl>https://bedework.com/</organizationUrl>
+    </developer>
+    <developer>
+      <name>Arlen Johnson</name>
+      <organization>
+        Spherical Cow Group
+      </organization>
+      <organizationUrl>http://sphericalcowgroup.com/</organizationUrl>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>Apache License Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+    </license>
+  </licenses>
 
   <modules>
     <module>bw-hibernate</module>

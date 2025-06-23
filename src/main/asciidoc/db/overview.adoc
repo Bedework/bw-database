@@ -1,0 +1,5 @@
+[[db]]
+== Database Base classes
+Provides classes and interfaces used by the other database modules.
+
+These are independent of any implementation. Includes a factory which uses a system property to determine which flavor of implementation to load.

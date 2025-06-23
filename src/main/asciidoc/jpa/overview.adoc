@@ -1,0 +1,3 @@
+[[db-jpa]]
+== Database JPA classes
+Provides jpa compliant implementation. Can be overridden to provide an orm specific implementation.

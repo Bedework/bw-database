@@ -1,0 +1,3 @@
+[[db-openjpa]]
+== Database Openjpa classes
+Provides an openjpa specific implementation of the jpa classes.

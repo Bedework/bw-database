@@ -1,0 +1,3 @@
+[[db-hibernate]]
+== Database Hibernate classes
+Provides a hibernate specific implementation of the jpa classes.

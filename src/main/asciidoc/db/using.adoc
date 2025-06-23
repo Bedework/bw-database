@@ -1,0 +1,10 @@
+=== Using this project
+Add the artifact(s) as a dependency to your project:
+
+[source]
+----
+      <dependency>
+        <groupId>org.bedework.database</groupId>
+        <artifactId>bw-db</artifactId>
+      </dependency>
+----
