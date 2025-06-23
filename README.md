@@ -1,4 +1,4 @@
-# bw-database [![Build Status](https://travis-ci.org/Bedework/bw-util2.svg)](https://travis-ci.org/Bedework/bw-util2)
+# bw-database 
 Database access classes for
 [Bedework](https://www.apereo.org/projects/bedework).
 
