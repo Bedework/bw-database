@@ -53,6 +53,11 @@ public class HibSessionImpl extends DbSessionImpl {
         throw exc;
       }
 
+      if (debug()) {
+        error("---------- Exception in commit ---------");
+        error(t);
+      }
+
       final Class<?> obj;
       try {
         obj = t.getClass().getClassLoader().loadClass(

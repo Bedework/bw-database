@@ -3,8 +3,18 @@ name: dependency-check
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '.gitignore'
+      - '*.md'
+      - 'docs/**'
+      - '**/*.adoc'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '.gitignore'
+      - '*.md'
+      - 'docs/**'
+      - '**/*.adoc'
   schedule:
     - cron: '40 1 * * 1'
 
@@ -48,6 +58,8 @@ jobs:
         run: |
           mvn -Pbedework-dev,depcheck --settings ./.github/workflows/settings.xml \
             --no-transfer-progress clean install -DskipTests \
+            -DossIndexUsername="${{secrets.OSSINDEXUSER}}" \
+            -DossIndexPassword="${{secrets.OSSINDEXPW}}" \
             -DnvdApiKey=${{secrets.nvdApiKey}} -DskipITs -Dmax.cvss.score=8 \
             org.owasp:dependency-check-maven:aggregate 
           #  -l ${{github.workspace}}/mvn-output.txt

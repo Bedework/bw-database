@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bedework</groupId>
     <artifactId>bedework-parent</artifactId>
-    <version>206</version>
+    <version>239-SNAPSHOT</version>
   </parent>
 
   <groupId>org.bedework.database</groupId>
@@ -22,79 +22,10 @@
     <url>https://github.com/Bedework/bw-database</url>
   </scm>
 
-  <developers>
-    <developer>
-      <name>Mike Douglass</name>
-      <organization>
-        Bedework Commercial Services
-      </organization>
-      <organizationUrl>https://bedework.com/</organizationUrl>
-    </developer>
-    <developer>
-      <name>Arlen Johnson</name>
-      <organization>
-        Spherical Cow Group
-      </organization>
-      <organizationUrl>http://sphericalcowgroup.com/</organizationUrl>
-    </developer>
-  </developers>
-
-  <licenses>
-    <license>
-      <name>Apache License Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-    </license>
-  </licenses>
-
   <modules>
     <module>bw-hibernate</module>
     <module>bw-db</module>
     <module>bw-openjpa</module>
     <module>bw-jpa</module>
   </modules>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.owasp</groupId>
-        <artifactId>dependency-check-maven</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.asciidoctor</groupId>
-        <artifactId>asciidoctor-maven-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
-
-        <executions>
-          <execution>
-            <id>copy-generated-asciidoc</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.basedir}/docs/</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/generated-docs</directory>
-                  <filtering>false</filtering>
-                  <includes>
-                    <include>index.html</include>
-                    <include>asciidoctor.css</include>
-                    <include>tocbot*/*</include>
-                    <include>docinfo/*</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-    </plugins>
-  </build>
 </project>
